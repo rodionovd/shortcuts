@@ -6,6 +6,11 @@ This simple utility allows you to view, update, create and delete text substitut
 
 Since it's built on top of private API from InputMethodKit.framework I'm not sure what macOS versions are supported, but it works fine for me on 10.11.6 `¯\_(ツ)_/¯` 
 
+
+## Installation
+
+I'm working on adding shortcuts to Homebrew so it can be installed without a hassle ([#4](https://github.com/rodionovd/shortcuts/issues/4)); until then you need to open the Xcode project and build the utility yourself, then copy it into /usr/local/bin or any other suitable location.
+
 ## Usage
 
 ### Listing all text replacements
