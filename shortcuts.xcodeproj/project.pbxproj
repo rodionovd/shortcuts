@@ -234,7 +234,7 @@
 		0AE197871D699C94006A3607 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application: Dmitry Rodionov (C6QG5C28K7)";
+				CODE_SIGN_IDENTITY = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -242,7 +242,7 @@
 		0AE197881D699C94006A3607 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application: Dmitry Rodionov (C6QG5C28K7)";
+				CODE_SIGN_IDENTITY = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
