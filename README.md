@@ -9,7 +9,13 @@ Since it's built on top of private API from InputMethodKit.framework I'm not sur
 
 ## Installation
 
-I'm working on adding shortcuts to Homebrew so it can be installed without a hassle ([#4](https://github.com/rodionovd/shortcuts/issues/4)); until then you need to either [download a pre-built binary](https://github.com/rodionovd/shortcuts/releases) or open the Xcode project and build the utility yourself, then copy it into /usr/local/bin or any other suitable location.
+You can install shortcuts with [Homebrew](http://brew.sh):
+
+```shell
+$ brew install rodionovd/taps/shortcuts
+```
+
+> Please note that you'll need Xcode in order to compile the project. If you don't use Xcode, [download a pre-built binary](https://github.com/rodionovd/shortcuts/releases) and put it into `/usr/local/bin/` or any other suitable location.
 
 ## Usage
 
