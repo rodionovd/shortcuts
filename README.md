@@ -20,7 +20,7 @@ $ brew install rodionovd/taps/shortcuts
 ### Listing all text replacements
 
 ```bash
-$ shortcuts list [--as-plist]
+$ shortcuts read [--as-plist]
 ```
 
 You can specify `--as-plist` modifier to generate a property list file suitable for dragging into Keyboard Preferences Pane (see [How to export and import text substitutions in OS X](https://support.apple.com/en-au/HT204006) for details). 
@@ -37,7 +37,7 @@ or manully like this
 
 
 ```bash
-shortcuts new [--force] <shortcut> <phrase>
+shortcuts create [--force] <shortcut> <phrase>
 ```
 
 The default conflict resolution strategy is that the existing entries will not be overwritten with those from the input file/command line. You should use the `--force` flag to update existing entries (i.e. for the same `<shortcut>`).
