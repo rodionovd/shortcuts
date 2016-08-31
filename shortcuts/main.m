@@ -12,7 +12,7 @@
 #include <objc/runtime.h>
 #import "shortcuts.h"
 
-static const char * const kVersion = "1.0.0";
+static const char * const kVersion = "1.1.0";
 
 static int usage(void);
 
