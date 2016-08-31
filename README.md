@@ -51,7 +51,7 @@ As simple as
 shortcuts update <shortcut> <phrase>
 ```
 
-Currently this command is an alias for the `new --force` command.
+Currently this command is an alias for the `create --force` command.
 
 ### Deleting shortcuts
 
