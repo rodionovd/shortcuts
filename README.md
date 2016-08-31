@@ -2,8 +2,6 @@
 
 This simple utility allows you to view, update, create and delete text substitutions used in Cocoa-based applications.
 
-> NOTE: beware that if you use iCloud to sync your text substitutions they will be screwed up eventually (because that's how good iCloud sync is). But at least you may use this tool to make and restore backups 🎉.
-
 Since it's built on top of private API from InputMethodKit.framework I'm not sure what macOS versions are supported, but it works fine for me on 10.11.6 `¯\_(ツ)_/¯` 
 
 
