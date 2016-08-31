@@ -32,7 +32,7 @@ int main(int argc, const char * argv[]) {
             return new(arguments[userInputOffset+2], arguments[userInputOffset+3], force);
         } else if ([mode isEqualToString:@"update"] && arguments.count >= 4) {
             return update(arguments[2], arguments[3]);
-        } else if ([mode isEqualToString:@"list"]) {
+        } else if ([mode isEqualToString:@"list"] || [mode isEqualToString:@"read"]) {
             return list(arguments.count > 2 ? arguments[2] : nil);
         } else if ([mode isEqualToString:@"delete"] && arguments.count >= 3) {
             return delete(arguments[2]);
@@ -46,7 +46,7 @@ static int usage(void)
     printf("Command line interface to user's text replacements.\nshortcuts version: %s\n", kVersion);
     printf("Usage:\n\n"
 
-           "\t%s list [--as-plist]\n"
+           "\t%s read [--as-plist]\n"
            "\t\tList existing text replacements. You can also specify the desired output format."
 
            "\n\n\t%s import [--force] /path/to/input.plist\n\t\t"
@@ -54,9 +54,7 @@ static int usage(void)
            "The default conflict resolution strategy is that the existing entries will not be overwritten\n\t\t"
            "with those from the input file. You can alter this behaviour by specifying the --force flag."
 
-           "\n\n\t%s new [--force] <shortcut> <phrase>\n"
-           "\t\tor\n"
-           "\t%s create [--force] <shortcut> <phrase>\n"
+           "\n\n\t%s create [--force] <shortcut> <phrase>\n"
            "\t\tCreate a new text replacement that expands <shortcut> to <phrase>.\n\t\t"
            "The conflict resolution strategy is conservative: you should use the --force flag to update\n\t\t"
            "existing entries (with the same <shortcut>)."
@@ -70,6 +68,6 @@ static int usage(void)
 
            "\n\nMade by Internals Exposed @ 2016.\n"
            "Issue tracker: https://github.com/rodionovd/shortcuts/issues\n",
-           getprogname(), getprogname(), getprogname(), getprogname(), getprogname(), getprogname());
+           getprogname(), getprogname(), getprogname(), getprogname(), getprogname());
     return EXIT_FAILURE;
 }
