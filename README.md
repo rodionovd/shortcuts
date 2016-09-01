@@ -19,7 +19,7 @@ $ brew install rodionovd/taps/shortcuts
 
 ### Listing all text replacements
 
-```bash
+```shell
 $ shortcuts read [--as-plist]
 ```
 
@@ -29,15 +29,15 @@ You can specify `--as-plist` modifier to generate a property list file suitable 
 
 You can import new text replacement entries either from a property list (see above)
 
-```bash
-shortcuts import [--force] /path/to/input.plist
+```shell
+$ shortcuts import [--force] /path/to/input.plist
 ```
 
 or manully like this
 
 
-```bash
-shortcuts create [--force] <shortcut> <phrase>
+```shell
+$ shortcuts create [--force] <shortcut> <phrase>
 ```
 
 The default conflict resolution strategy is that the existing entries will not be overwritten with those from the input file/command line. You should use the `--force` flag to update existing entries (i.e. for the same `<shortcut>`).
@@ -47,16 +47,16 @@ The default conflict resolution strategy is that the existing entries will not b
 
 As simple as
 
-```bash
-shortcuts update <shortcut> <phrase>
+```shell
+$ shortcuts update <shortcut> <phrase>
 ```
 
 Currently this command is an alias for the `create --force` command.
 
 ### Deleting shortcuts
 
-```bash
-shortcuts delete <shortcut>
+```shell
+$ shortcuts delete <shortcut>
 ```
 
 Well that's it.
