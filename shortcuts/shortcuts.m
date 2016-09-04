@@ -10,7 +10,7 @@
 #import "InputMethodKit+Private.h"
 #import "NSArray+HigherOrder.h"
 
-static IMKTextReplacementEntryTransaction * _Nonnull transactionForEntry(IMKTextReplacementEntry * _Nonnull entry,
+static IMKTextReplacementEntryTransaction * _Nonnull transactionForNewEntry(IMKTextReplacementEntry * _Nonnull entry,
                                                                          BOOL * _Nullable overwritting);
 
 int import(NSString * _Nonnull inputPropertyListPath, BOOL forceOverwrite)
@@ -24,7 +24,7 @@ int import(NSString * _Nonnull inputPropertyListPath, BOOL forceOverwrite)
                                                                         timestamp:nil];
         NSCAssert(entry != nil, @"Could not create a text replacement entry from dictionary: %@", item);
         BOOL willOverwrite = NO;
-        id result = transactionForEntry(entry, &willOverwrite);
+        id result = transactionForNewEntry(entry, &willOverwrite);
         if (willOverwrite && !forceOverwrite) {
             return nil;
         }
@@ -47,7 +47,7 @@ int new(NSString * _Nonnull shortcut, NSString * _Nonnull phrase, BOOL forceOver
                                                                        timestamp:nil];
     IMKTextReplacementController *controller = [[IMKTextReplacementController alloc] init];
     BOOL willOverwrite = NO;
-    IMKTextReplacementEntryTransaction *_Nullable transaction = transactionForEntry(newEntry, &willOverwrite);
+    IMKTextReplacementEntryTransaction *_Nullable transaction = transactionForNewEntry(newEntry, &willOverwrite);
     // Check for undesired overrides
     if (willOverwrite && !forceOverwrite) {
         fprintf(stderr, "An entry with the same shortcut \"%s\" already exists. Use --force modifier or 'update' command to update existing text substitution entries.\n", shortcut.UTF8String);
@@ -63,7 +63,7 @@ int new(NSString * _Nonnull shortcut, NSString * _Nonnull phrase, BOOL forceOver
     return EXIT_SUCCESS;
 }
 
-static IMKTextReplacementEntryTransaction * _Nullable transactionForEntry(IMKTextReplacementEntry *entry, BOOL *willOverwrite)
+static IMKTextReplacementEntryTransaction * _Nullable transactionForNewEntry(IMKTextReplacementEntry *entry, BOOL *willOverwrite)
 {
     IMKTextReplacementController *controller = [[IMKTextReplacementController alloc] init];
     // Maybe there's an entry for the same shortcut?
