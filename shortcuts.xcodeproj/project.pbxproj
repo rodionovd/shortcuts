@@ -18,8 +18,8 @@
 		0AE197821D699C94006A3607 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0AE197891D699CA1006A3607 /* InputMethodKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InputMethodKit.framework; path = System/Library/Frameworks/InputMethodKit.framework; sourceTree = SDKROOT; };
 		0AE1978C1D699CF8006A3607 /* InputMethodKit+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "InputMethodKit+Private.h"; sourceTree = "<group>"; };
-		0AE1978D1D69A896006A3607 /* NSArray+HigherOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+HigherOrder.h"; sourceTree = "<group>"; };
-		0AE1978E1D69A896006A3607 /* NSArray+HigherOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+HigherOrder.m"; sourceTree = "<group>"; };
+		0AE1978D1D69A896006A3607 /* NSArray+HigherOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+HigherOrder.h"; path = "shortcuts/NSArray+HigherOrder.h"; sourceTree = "<group>"; };
+		0AE1978E1D69A896006A3607 /* NSArray+HigherOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+HigherOrder.m"; path = "shortcuts/NSArray+HigherOrder.m"; sourceTree = "<group>"; };
 		0AE197901D69E0D2006A3607 /* shortcuts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = shortcuts.m; sourceTree = "<group>"; };
 		0AE197911D69E0D2006A3607 /* shortcuts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shortcuts.h; sourceTree = "<group>"; };
 		0AE197931D69EAC9006A3607 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -37,11 +37,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0AD367FC1D81D00C005EF940 /* Private Headers */ = {
+			isa = PBXGroup;
+			children = (
+				0AE1978C1D699CF8006A3607 /* InputMethodKit+Private.h */,
+			);
+			name = "Private Headers";
+			sourceTree = "<group>";
+		};
 		0AE197761D699C94006A3607 = {
 			isa = PBXGroup;
 			children = (
 				0AE197931D69EAC9006A3607 /* README.md */,
-				0AE1978C1D699CF8006A3607 /* InputMethodKit+Private.h */,
 				0AE197811D699C94006A3607 /* Sources */,
 				0AE1978B1D699CA6006A3607 /* Frameworks */,
 				0AE197801D699C94006A3607 /* Products */,
@@ -62,6 +69,7 @@
 				0AE197821D699C94006A3607 /* main.m */,
 				0AE197901D69E0D2006A3607 /* shortcuts.m */,
 				0AE197911D69E0D2006A3607 /* shortcuts.h */,
+				0AD367FC1D81D00C005EF940 /* Private Headers */,
 				0AE197951D69EACE006A3607 /* Categories */,
 			);
 			name = Sources;
