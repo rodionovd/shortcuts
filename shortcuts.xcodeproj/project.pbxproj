@@ -14,6 +14,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A326EC51D943CB40006FB16 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0AE1977F1D699C94006A3607 /* shortcuts */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = shortcuts; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AE197821D699C94006A3607 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0AE197891D699CA1006A3607 /* InputMethodKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InputMethodKit.framework; path = System/Library/Frameworks/InputMethodKit.framework; sourceTree = SDKROOT; };
@@ -71,6 +72,7 @@
 				0AE197911D69E0D2006A3607 /* shortcuts.h */,
 				0AD367FC1D81D00C005EF940 /* Private Headers */,
 				0AE197951D69EACE006A3607 /* Categories */,
+				0A326EC51D943CB40006FB16 /* Info.plist */,
 			);
 			name = Sources;
 			path = shortcuts;
@@ -119,11 +121,13 @@
 		0AE197771D699C94006A3607 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Internals Exposed";
 				TargetAttributes = {
 					0AE1977E1D699C94006A3607 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = C6QG5C28K7;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -172,8 +176,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -216,8 +222,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -242,7 +250,11 @@
 		0AE197871D699C94006A3607 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				DEVELOPMENT_TEAM = C6QG5C28K7;
+				INFOPLIST_FILE = "$(SRCROOT)/shortcuts/Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = exposed.internals.shortcuts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -250,7 +262,11 @@
 		0AE197881D699C94006A3607 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				DEVELOPMENT_TEAM = C6QG5C28K7;
+				INFOPLIST_FILE = "$(SRCROOT)/shortcuts/Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = exposed.internals.shortcuts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
