@@ -7,18 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A326EC81D9446120006FB16 /* KeyboardServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A326EC71D9446120006FB16 /* KeyboardServices.framework */; };
 		0AE197831D699C94006A3607 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE197821D699C94006A3607 /* main.m */; };
-		0AE1978A1D699CA1006A3607 /* InputMethodKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE197891D699CA1006A3607 /* InputMethodKit.framework */; };
 		0AE1978F1D69A896006A3607 /* NSArray+HigherOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE1978E1D69A896006A3607 /* NSArray+HigherOrder.m */; };
 		0AE197921D69E0D2006A3607 /* shortcuts.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE197901D69E0D2006A3607 /* shortcuts.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0A326EC51D943CB40006FB16 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A326EC51D943CB40006FB16 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = shortcuts/Info.plist; sourceTree = "<group>"; };
+		0A326EC61D9442C10006FB16 /* KeyboardServices+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KeyboardServices+Private.h"; sourceTree = "<group>"; };
+		0A326EC71D9446120006FB16 /* KeyboardServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeyboardServices.framework; path = ../../../../System/Library/PrivateFrameworks/KeyboardServices.framework; sourceTree = "<group>"; };
 		0AE1977F1D699C94006A3607 /* shortcuts */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = shortcuts; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AE197821D699C94006A3607 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0AE197891D699CA1006A3607 /* InputMethodKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InputMethodKit.framework; path = System/Library/Frameworks/InputMethodKit.framework; sourceTree = SDKROOT; };
-		0AE1978C1D699CF8006A3607 /* InputMethodKit+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "InputMethodKit+Private.h"; sourceTree = "<group>"; };
 		0AE1978D1D69A896006A3607 /* NSArray+HigherOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+HigherOrder.h"; path = "shortcuts/NSArray+HigherOrder.h"; sourceTree = "<group>"; };
 		0AE1978E1D69A896006A3607 /* NSArray+HigherOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+HigherOrder.m"; path = "shortcuts/NSArray+HigherOrder.m"; sourceTree = "<group>"; };
 		0AE197901D69E0D2006A3607 /* shortcuts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = shortcuts.m; sourceTree = "<group>"; };
@@ -31,7 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0AE1978A1D699CA1006A3607 /* InputMethodKit.framework in Frameworks */,
+				0A326EC81D9446120006FB16 /* KeyboardServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,7 +42,7 @@
 		0AD367FC1D81D00C005EF940 /* Private Headers */ = {
 			isa = PBXGroup;
 			children = (
-				0AE1978C1D699CF8006A3607 /* InputMethodKit+Private.h */,
+				0A326EC61D9442C10006FB16 /* KeyboardServices+Private.h */,
 			);
 			name = "Private Headers";
 			sourceTree = "<group>";
@@ -50,6 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				0AE197931D69EAC9006A3607 /* README.md */,
+				0A326EC51D943CB40006FB16 /* Info.plist */,
 				0AE197811D699C94006A3607 /* Sources */,
 				0AE1978B1D699CA6006A3607 /* Frameworks */,
 				0AE197801D699C94006A3607 /* Products */,
@@ -72,7 +74,6 @@
 				0AE197911D69E0D2006A3607 /* shortcuts.h */,
 				0AD367FC1D81D00C005EF940 /* Private Headers */,
 				0AE197951D69EACE006A3607 /* Categories */,
-				0A326EC51D943CB40006FB16 /* Info.plist */,
 			);
 			name = Sources;
 			path = shortcuts;
@@ -81,6 +82,7 @@
 		0AE1978B1D699CA6006A3607 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0A326EC71D9446120006FB16 /* KeyboardServices.framework */,
 				0AE197891D699CA1006A3607 /* InputMethodKit.framework */,
 			);
 			name = Frameworks;
@@ -182,7 +184,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -201,7 +203,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -228,7 +230,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -241,7 +243,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
@@ -252,6 +254,10 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				DEVELOPMENT_TEAM = C6QG5C28K7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/shortcuts/Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = exposed.internals.shortcuts;
@@ -264,6 +270,10 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				DEVELOPMENT_TEAM = C6QG5C28K7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/shortcuts/Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = exposed.internals.shortcuts;
