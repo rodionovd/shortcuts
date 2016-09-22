@@ -24,7 +24,7 @@ int main(int argc, const char * argv[]) {
         }
         NSString *mode = arguments[1];
         if ([mode isEqualToString:@"import"] && arguments.count >= 3) {
-            BOOL force = arguments.count > 4 && [arguments[2] isEqualToString:@"--force"];
+            BOOL force = arguments.count > 3 && [arguments[2] isEqualToString:@"--force"];
             return import(arguments[force ? 3 : 2], force);
         } else if (([mode isEqualToString:@"new"] || [mode isEqualToString:@"create"]) && arguments.count >= 4) {
             BOOL force = arguments.count > 4 && [arguments[2] isEqualToString:@"--force"];
