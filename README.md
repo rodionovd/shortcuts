@@ -6,7 +6,7 @@ This simple utility allows you to view, update, create and delete text substitut
 
 `shortcuts` is built on top of macOS' private APIs (InputMethodKit.framework for 10.11, KeyboardServices.framework for 10.12) so any OS update (especially a major one) could break the utility. If this ever happens I'll try my best to fix it as soon as possible, so stay tuned! 
 
-There're two branches in this repo: `v1.x` for El Capitan (10.11) and `master` for Sierra (10.12). The former is in maintaince mode mostly so it won't receive any new features (but I'll try to backport bug fixes from `master`, so don't worry).
+There're two branches in this repo: [`v1.x`](https://github.com/rodionovd/shortcuts/tree/1.x/for-el-capitan) for El Capitan (10.11) and [`master`](https://github.com/rodionovd/shortcuts/tree/master) for Sierra (10.12). The former is in maintaince mode mostly so it won't receive any new features (but I'll try to backport bug fixes from `master`, so don't worry).
 
 If you're installing `shortcuts` via Homebrew the appropriate version is installed automatically based on your macOS revision. 
 
