@@ -7,84 +7,134 @@
 //
 
 #import "shortcuts.h"
-#import "InputMethodKit+Private.h"
+#import "KeyboardServices+Private.h"
 #import "NSArray+HigherOrder.h"
 
-static IMKTextReplacementEntryTransaction * _Nonnull transactionForNewEntry(IMKTextReplacementEntry * _Nonnull entry,
-                                                                         BOOL * _Nullable overwritting);
+#define kTimeoutSec (3)
 
-int import(NSString * _Nonnull inputPropertyListPath, BOOL forceOverwrite)
+#pragma mark Utilities
+
+_KSTextReplacementEntry * _Nullable _existingEntryForShortcut(NSString * _Nonnull shortcut)
 {
-    NSArray *array = [NSArray arrayWithContentsOfFile:inputPropertyListPath];
-    NSCAssert(array != nil, @"Invalid input file");
-
-    NSArray <IMKTextReplacementEntryTransaction *> *transactions = [array rd_flatMap:^id(NSDictionary *item) {
-        IMKTextReplacementEntry *entry = [IMKTextReplacementEntry entryWithPhrase:item[@"phrase"]
-                                                                         shortcut:item[@"shortcut"]
-                                                                        timestamp:nil];
-        NSCAssert(entry != nil, @"Could not create a text replacement entry from dictionary: %@", item);
-        BOOL willOverwrite = NO;
-        id result = transactionForNewEntry(entry, &willOverwrite);
-        if (willOverwrite && !forceOverwrite) {
-            return nil;
-        }
-        return result;
-    }];
-
-    IMKTextReplacementController *controller = [[IMKTextReplacementController alloc] init];
-    [controller performTransactions:transactions withCompletionHandler:nil];
-
-    return EXIT_SUCCESS;
+    // XXX: for some reason _KSTextReplacementClientStore returns an empty array for every (even
+    // non-filtered) query so here's a workaround -- we'll look into global defaults to obtain
+    // a list of existing shortcuts.
+    // TODO: use -queryTextReplacementsWithPredicate:callback: here
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray <NSDictionary *> *rawEntries = [defaults arrayForKey:@"NSUserDictionaryReplacementItems"];
+    return [[rawEntries rd_filter:^BOOL(NSDictionary *raw) {
+        return [raw[@"replace"] isEqualToString:shortcut];
+    }] rd_map:^id _Nonnull(NSDictionary *raw) {
+        _KSTextReplacementEntry *entry = [_KSTextReplacementEntry new];
+        entry.shortcut = raw[@"replace"];
+        entry.phrase = raw[@"with"];
+        return entry;
+    }].firstObject;
 }
+
+int _submit(NSArray <_KSTextReplacementEntry *> * _Nullable toAdd, NSArray <_KSTextReplacementEntry *> * _Nullable toRemove)
+{
+    NSCAssert((toAdd != nil || toRemove != nil),
+              @"At least one of the `toAdd` or `toRemove` arguments should be specified");
+
+    _KSTextReplacementClientStore *store = [_KSTextReplacementClientStore new];
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+    __block int result = EXIT_FAILURE;
+    [store addEntries:toAdd removeEntries:toRemove withCompletionHandler:^(NSError *error) {
+        if (error && error.code != 0) {
+            fprintf(stderr, "Error: %s\n", [_KSTextReplacementHelper errorStringForCode:error.code].UTF8String);
+        } else {
+            result = KERN_SUCCESS;
+        }
+        dispatch_semaphore_signal(sema);
+    }];
+    if (0 != dispatch_semaphore_wait(sema, dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kTimeoutSec * NSEC_PER_SEC)))) {
+        fprintf(stderr, "Error: operation timed out\n");
+        result = KERN_FAILURE;
+    }
+    return result;
+}
+
+int _update(_KSTextReplacementEntry * _Nonnull original, _KSTextReplacementEntry * _Nonnull replacement)
+{
+    NSCParameterAssert(original != nil);
+    NSCParameterAssert(replacement != nil);
+
+    _KSTextReplacementClientStore *store = [_KSTextReplacementClientStore new];
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+    __block int result = EXIT_FAILURE;
+    [store modifyEntry:original toEntry:replacement withCompletionHandler:^(NSError *error) {
+        if (error  && error.code != 0) {
+            NSLog(@"%@", error);
+            fprintf(stderr, "Error: %s\n", [_KSTextReplacementHelper errorStringForCode:error.code].UTF8String);
+        } else {
+            result = KERN_SUCCESS;
+        }
+        dispatch_semaphore_signal(sema);
+    }];
+    if (0 != dispatch_semaphore_wait(sema, dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kTimeoutSec * NSEC_PER_SEC)))) {
+        fprintf(stderr, "Error: operation timed out\n");
+        result = KERN_FAILURE;
+    }
+    return result;
+}
+
+#pragma mark API
 
 int new(NSString * _Nonnull shortcut, NSString * _Nonnull phrase, BOOL forceOverwrite)
 {
     NSCParameterAssert(shortcut != nil);
     NSCParameterAssert(phrase != nil);
 
-    IMKTextReplacementEntry *newEntry = [IMKTextReplacementEntry entryWithPhrase:phrase
-                                                                        shortcut:shortcut
-                                                                       timestamp:nil];
-    IMKTextReplacementController *controller = [[IMKTextReplacementController alloc] init];
-    BOOL willOverwrite = NO;
-    IMKTextReplacementEntryTransaction *_Nullable transaction = transactionForNewEntry(newEntry, &willOverwrite);
-    // Check for undesired overrides
-    if (willOverwrite && !forceOverwrite) {
-        fprintf(stderr, "An entry with the same shortcut \"%s\" already exists. Use --force modifier or 'update' command to update existing text substitution entries.\n", shortcut.UTF8String);
+    _KSTextReplacementEntry *existingEntry = _existingEntryForShortcut(shortcut);
+    if (existingEntry && !forceOverwrite) {
+        fprintf(stderr, "An entry with the same shortcut \"%s\" already exists. "
+                "Use --force modifier or 'update' command to update existing text"
+                "substitution entries.\n", shortcut.UTF8String);
         return EXIT_FAILURE;
+    }
 
+    _KSTextReplacementEntry *newEntry = [_KSTextReplacementEntry new];
+    newEntry.phrase = phrase;
+    newEntry.shortcut = shortcut;
+
+    NSCAssert([_KSTextReplacementHelper validateTextReplacement:newEntry] == 0,
+              @"Could not create a text replacement entry from the given input: %@",
+              [_KSTextReplacementHelper errorStringForCode:
+               [_KSTextReplacementHelper validateTextReplacement:newEntry]]);
+
+    if (existingEntry) {
+        return _update(existingEntry, newEntry);
+    } else {
+        return _submit(@[newEntry], nil);
     }
-    // Nothing to do here (we're overriding an entry with the equal one)
-    if (!transaction) {
-        return EXIT_SUCCESS;
-    }
-    // XXX: we should probably wait here but I can't get the completion handler to be called so whatever
-    [controller performTransactions:@[transaction] withCompletionHandler:nil];
-    return EXIT_SUCCESS;
 }
 
-static IMKTextReplacementEntryTransaction * _Nullable transactionForNewEntry(IMKTextReplacementEntry *entry, BOOL *willOverwrite)
+int import(NSString * _Nonnull inputPropertyListPath, BOOL forceOverwrite)
 {
-    IMKTextReplacementController *controller = [[IMKTextReplacementController alloc] init];
-    // Maybe there's an entry for the same shortcut?
-    NSUInteger idx = [controller.entries indexOfObjectPassingTest:
-                      ^BOOL(IMKTextReplacementEntry *existing, NSUInteger idx, BOOL * stop)
-    {
-        return [existing.shortcut isEqualToString:entry.shortcut];
-    }];
-    IMKTextReplacementEntry *existingEntry = (idx != NSNotFound ? controller.entries[idx] : nil);
-    if (willOverwrite) {
-        *willOverwrite = (existingEntry != nil);
-    }
+    NSArray *array = [NSArray arrayWithContentsOfFile:inputPropertyListPath];
+    NSCAssert(array != nil, @"Invalid input file");
 
-    // Either update the existing entry or insert the new one
-    IMKTextReplacementEntryTransaction *transaction = nil;
-    if (existingEntry != nil) {
-        transaction = [IMKTextReplacementEntryTransaction entryToUpdate:existingEntry withEntryToSet:entry];
-    } else {
-        transaction = [IMKTextReplacementEntryTransaction entryToInsert:entry];
-    }
-    return transaction;
+    NSArray <_KSTextReplacementEntry *> *newEntries = [array rd_flatMap:^id _Nullable(NSDictionary *item) {
+        _KSTextReplacementEntry *newEntry = [_KSTextReplacementEntry new];
+        newEntry.phrase = item[@"phrase"];
+        newEntry.shortcut = item[@"shortcut"];
+        NSCAssert([_KSTextReplacementHelper validateTextReplacement:newEntry] == 0,
+                  @"Could not create a text replacement entry from dictionary %@", item);
+        // Check for overrides
+        _KSTextReplacementEntry *existingEntry = _existingEntryForShortcut(item[@"shortcut"]);
+        if (existingEntry && !forceOverwrite) {
+            return nil;
+        }
+        // Update existing entries in-place
+        if (existingEntry) {
+            _update(existingEntry, newEntry);
+            return nil;
+        }
+        return newEntry;
+    }];
+
+    return _submit(newEntries, nil);
 }
 
 int update(NSString * _Nonnull shortcut, NSString * _Nonnull phrase)
@@ -94,9 +144,13 @@ int update(NSString * _Nonnull shortcut, NSString * _Nonnull phrase)
 
 int list(NSString * _Nullable mode)
 {
-    IMKTextReplacementController *controller = [[IMKTextReplacementController alloc] init];
-    NSArray *converted = [controller.entries rd_map:^NSDictionary *(IMKTextReplacementEntry *entry) {
-        return @{@"phrase":entry.phrase, @"shortcut":entry.shortcut};
+    // XXX: for some reason _KSTextReplacementClientStore returns an empty array for every single
+    // query so here's a workaround -- we'll look into global defaults to obtain a list of existing shortcuts.
+    // TODO: use -queryTextReplacementsWithCallback: here
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray <NSDictionary *> *rawEntries = [defaults arrayForKey:@"NSUserDictionaryReplacementItems"];
+    NSArray *converted = [rawEntries rd_map:^id _Nonnull(NSDictionary *raw) {
+        return @{@"phrase":raw[@"with"], @"shortcut":raw[@"replace"]};
     }];
 
     if ([mode isEqualToString:@"--as-plist"]) {
@@ -123,20 +177,9 @@ int list(NSString * _Nullable mode)
 
 int delete(NSString * _Nonnull shortcut)
 {
-    IMKTextReplacementController *controller = [[IMKTextReplacementController alloc] init];
-    NSUInteger idx = [controller.entries indexOfObjectPassingTest:
-                      ^BOOL(IMKTextReplacementEntry *existing, NSUInteger idx, BOOL * stop)
-    {
-        return [existing.shortcut isEqualToString:shortcut];
-    }];
-    // Got nothing to delete
-    if (idx == NSNotFound) {
+    _KSTextReplacementEntry *entryToDelete = _existingEntryForShortcut(shortcut);
+    if (entryToDelete == nil) {
         return EXIT_SUCCESS;
     }
-    IMKTextReplacementEntry *existingEntry = controller.entries[idx];
-    IMKTextReplacementEntryTransaction *transaction = [IMKTextReplacementEntryTransaction entryToDelete:existingEntry];
-    NSCAssert(transaction != nil, @"This shouldn't happen actually. Please file an issue.");
-    
-    [controller performTransactions:@[transaction] withCompletionHandler:nil];
-    return EXIT_SUCCESS;
+    return _submit(nil, @[entryToDelete]);
 }
