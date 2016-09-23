@@ -12,6 +12,8 @@
 
 #define kTimeoutSec (3)
 
+#pragma mark Utilities
+
 _KSTextReplacementEntry * _Nullable _existingEntryForShortcut(NSString * _Nonnull shortcut)
 {
     // XXX: for some reason _KSTextReplacementClientStore returns an empty array for every (even
@@ -76,6 +78,8 @@ int _update(_KSTextReplacementEntry * _Nonnull original, _KSTextReplacementEntry
     }
     return result;
 }
+
+#pragma mark API
 
 int new(NSString * _Nonnull shortcut, NSString * _Nonnull phrase, BOOL forceOverwrite)
 {
