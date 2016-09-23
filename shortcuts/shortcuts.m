@@ -64,7 +64,7 @@ int _update(_KSTextReplacementEntry * _Nonnull original, _KSTextReplacementEntry
     dispatch_semaphore_t sema = dispatch_semaphore_create(0);
     __block int result = EXIT_FAILURE;
     [store modifyEntry:original toEntry:replacement withCompletionHandler:^(NSError *error) {
-        if (error  && error.code != 0) {
+        if (error && error.code != 0) {
             NSLog(@"%@", error);
             fprintf(stderr, "Error: %s\n", [_KSTextReplacementHelper errorStringForCode:error.code].UTF8String);
         } else {
