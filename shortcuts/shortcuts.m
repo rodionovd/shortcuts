@@ -88,7 +88,7 @@ int new(NSString * _Nonnull shortcut, NSString * _Nonnull phrase, BOOL forceOver
 
     _KSTextReplacementEntry *existingEntry = _existingEntryForShortcut(shortcut);
     if (existingEntry && !forceOverwrite) {
-        fprintf(stderr, "An entry with the same shortcut \"%s\" already exists."
+        fprintf(stderr, "An entry with the same shortcut \"%s\" already exists. "
                 "Use --force modifier or 'update' command to update existing text"
                 "substitution entries.\n", shortcut.UTF8String);
         return EXIT_FAILURE;
