@@ -2,7 +2,7 @@
 
 This simple utility allows you to view, update, create and delete text substitutions used in Cocoa-based applications.
  
-## Supported macOS versions
+## ⚠️ Compatibility Warning
 
 `shortcuts` is built on top of macOS' private APIs (InputMethodKit.framework for 10.11, KeyboardServices.framework for 10.12) so any OS update (especially a major one) could break the utility. If this ever happens I'll try my best to fix it as soon as possible, so stay tuned! 
 
