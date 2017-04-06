@@ -54,7 +54,7 @@ The default conflict resolution strategy is that the existing entries will not b
 As simple as
 
 ```shell
-$ shortcuts update <shortcut> <phrase>
+$ shortcuts update <shortcut> <new phrase>
 ```
 
 Currently this command is an alias for the `create --force` command.
